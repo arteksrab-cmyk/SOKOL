@@ -1,0 +1,28 @@
+kind = "web"
+previewPath = "/"
+title = "Сокол — официальный лендинг"
+description = "Современный одностраничный сайт для сообщества «Сокол», собранный на основе публичной страницы VK. Помогает быстро понять, кто такие «Сокол», следить за новостями и перейти в группу."
+version = "1.0.0"
+id = "artifacts/sokol-landing"
+router = "path"
+
+[[services]]
+name = "web"
+paths = [ "/" ]
+localPort = 19870
+
+[services.development]
+run = "pnpm --filter @workspace/sokol-landing run dev"
+
+[services.production]
+build = [ "pnpm", "--filter", "@workspace/sokol-landing", "run", "build" ]
+serve = "static"
+publicDir = "artifacts/sokol-landing/dist/public"
+
+[[services.production.rewrites]]
+from = "/*"
+to = "/index.html"
+
+[services.env]
+PORT = "19870"
+BASE_PATH = "/"
