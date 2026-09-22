@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" viewBox="0 0 1200 630" fill="none">
+  <rect width="1200" height="630" fill="#111A38"/>
+  <path d="M910 -140C1090 40 1150 180 1280 280" stroke="#E9FF00" stroke-opacity=".18" stroke-width="2"/>
+  <path d="M860 -90C1050 100 1120 240 1270 350" stroke="#E9FF00" stroke-opacity=".08" stroke-width="70"/>
+  <path d="M0 82H1200M0 164H1200M0 246H1200M0 328H1200M0 410H1200M0 492H1200M0 574H1200" stroke="#F5F1E8" stroke-opacity=".05"/>
+  <path d="M82 0V630M164 0V630M246 0V630M328 0V630M410 0V630M492 0V630M574 0V630M656 0V630M738 0V630M820 0V630M902 0V630M984 0V630M1066 0V630M1148 0V630" stroke="#F5F1E8" stroke-opacity=".05"/>
+  <circle cx="990" cy="470" r="112" stroke="#E9FF00" stroke-opacity=".6"/>
+  <ellipse cx="990" cy="470" rx="78" ry="170" transform="rotate(55 990 470)" stroke="#E9FF00" stroke-opacity=".42"/>
+  <ellipse cx="990" cy="470" rx="52" ry="142" transform="rotate(-48 990 470)" stroke="#E9FF00" stroke-opacity=".32"/>
+  <text x="84" y="118" fill="#E9FF00" font-family="Arial, sans-serif" font-size="18" font-weight="700" letter-spacing="4">ОСТЕКЛЕНИЕ · МАТЕРИАЛЫ · РЕШЕНИЯ</text>
+  <text x="78" y="332" fill="#F5F1E8" font-family="Arial, sans-serif" font-size="164" font-weight="700" letter-spacing="-10">СОКОЛ</text>
+  <text x="88" y="398" fill="#F5F1E8" fill-opacity=".62" font-family="Arial, sans-serif" font-size="28">ПФ СОКОЛ — окна, двери, балконы и стеклопакеты</text>
+  <text x="992" y="496" fill="#E9FF00" font-family="Arial, sans-serif" font-size="92" font-weight="700" text-anchor="middle">С</text>
+</svg>
