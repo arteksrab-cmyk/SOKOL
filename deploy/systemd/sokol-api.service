@@ -1,0 +1,22 @@
+[Unit]
+Description=ПФ СОКОЛ — API заявок
+After=network.target
+
+[Service]
+Type=simple
+User=www-data
+Group=www-data
+WorkingDirectory=/var/www/sokol-site
+Environment=NODE_ENV=production
+Environment=PORT=8080
+EnvironmentFile=/etc/sokol-site/sokol-api.env
+ExecStart=/usr/bin/node /var/www/sokol-site/api/index.mjs
+Restart=on-failure
+RestartSec=5
+NoNewPrivileges=true
+PrivateTmp=true
+ProtectSystem=full
+ProtectHome=true
+
+[Install]
+WantedBy=multi-user.target
