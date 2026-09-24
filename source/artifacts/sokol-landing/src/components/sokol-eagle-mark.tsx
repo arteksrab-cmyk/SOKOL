@@ -33,9 +33,10 @@ function TracedFalcon({
     >
       <defs>
         <linearGradient id={traceGradientId} x1="0%" y1="0%" x2="100%" y2="100%">
-          <stop offset="0%" stopColor="#9a6d2d" />
-          <stop offset="47%" stopColor="#f2d887" />
-          <stop offset="100%" stopColor="#b47c31" />
+          <stop offset="0%" stopColor="#C58D35" />
+          <stop offset="42%" stopColor="#FFF0A0" />
+          <stop offset="68%" stopColor="#E7B94D" />
+          <stop offset="100%" stopColor="#B77A2E" />
         </linearGradient>
       </defs>
       <g className="sokol-eagle-bird-group">
@@ -53,6 +54,7 @@ function TracedFalcon({
 
 export function SokolEagleMark({ compact = false, smallBird = false, className = '' }: SokolEagleMarkProps) {
   const gradientId = `sokol-gold-${useId().replace(/:/g, '')}`;
+  const frameGradientId = `${gradientId}-frame`;
 
   if (compact) {
     return (
@@ -82,9 +84,14 @@ export function SokolEagleMark({ compact = false, smallBird = false, className =
       </desc>
       <defs>
         <linearGradient id={gradientId} x1="0%" y1="0%" x2="100%" y2="100%">
-          <stop offset="0%" stopColor="#9a6d2d" />
-          <stop offset="47%" stopColor="#f2d887" />
-          <stop offset="100%" stopColor="#b47c31" />
+          <stop offset="0%" stopColor="var(--sokol-gold-deep)" />
+          <stop offset="47%" stopColor="var(--sokol-gold-light)" />
+          <stop offset="100%" stopColor="var(--sokol-gold-bright)" />
+        </linearGradient>
+        <linearGradient id={frameGradientId} x1="0%" y1="0%" x2="100%" y2="100%">
+          <stop offset="0%" stopColor="#FFE45F" />
+          <stop offset="47%" stopColor="#FFF9A6" />
+          <stop offset="100%" stopColor="#FFD84A" />
         </linearGradient>
       </defs>
 
@@ -92,7 +99,7 @@ export function SokolEagleMark({ compact = false, smallBird = false, className =
         className="sokol-eagle-frame"
         pathLength="1"
          d="M55 166V136L180 65l125 71v30 M305 275v32L180 378 55 307v-32"
-        style={{ stroke: `url(#${gradientId})` }}
+         style={{ stroke: `url(#${frameGradientId})` }}
       />
         <path className="sokol-eagle-frame-inner" d="M66 171V142L180 77 294 142v29M294 269v26L180 360 66 295v-26" />
        <path className="sokol-eagle-rule" d="M55 156h26M279 156h26M55 268h26M279 268h26" />
@@ -101,7 +108,15 @@ export function SokolEagleMark({ compact = false, smallBird = false, className =
 
       <text className="sokol-eagle-small-type" x="180" y="181" textAnchor="middle">ПРОИЗВОДСТВЕННАЯ ФИРМА</text>
       <g className="sokol-eagle-wordmark">
-        <text className="sokol-eagle-type" x="180" y="257" textAnchor="middle">СОКОЛ</text>
+        <text
+          className="sokol-eagle-type"
+          x="180"
+          y="257"
+          textAnchor="middle"
+          style={{ fill: `url(#${gradientId})` }}
+        >
+          СОКОЛ
+        </text>
       </g>
       <text className="sokol-eagle-small-type" x="180" y="291" textAnchor="middle">ВСЕ ВИДЫ ОСТЕКЛЕНИЯ</text>
       <line className="sokol-eagle-underline" x1="93" y1="303" x2="267" y2="303" />

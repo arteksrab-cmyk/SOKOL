@@ -40,6 +40,27 @@ const workPhotos = [
   { src: workPhoto11, alt: 'Оконная конструкция после монтажа' },
 ] as const;
 
+const serviceCards = [
+  {
+    title: 'Окна и двери',
+    copy: 'Пластиковые, алюминиевые, раздвижные системы, а также металлические и стеклянные двери.',
+    image: '/service-images/windows-doors.jpg',
+    alt: 'Панорамные окна и стеклянные двери в современном интерьере',
+  },
+  {
+    title: 'Стекло и перегородки',
+    copy: 'Стеклопакеты любой сложности и размеров, офисные и душевые перегородки.',
+    image: '/service-images/glass-partitions.jpg',
+    alt: 'Стеклянные офисные перегородки с чёрными профилями',
+  },
+  {
+    title: 'Балконы и аксессуары',
+    copy: 'Балконы, лоджии, подоконники, сэндвич-панели, уголки и сливы.',
+    image: '/service-images/balconies.jpg',
+    alt: 'Современное остекление балкона в светлом интерьере',
+  },
+] as const;
+
 type CookieConsent = 'accepted' | 'rejected';
 
 function Arrow({ diagonal = false }: { diagonal?: boolean }) {
@@ -121,14 +142,13 @@ function WorksGallery() {
     <section className="works-section section light-grid" id="наши-работы" aria-labelledby="works-title">
       <div className="works-layout">
         <div className="reveal">
-          <span className="eyebrow">04 / Наши объекты</span>
+          <span className="eyebrow">Наши объекты</span>
           <h2 className="section-heading display mt-7" id="works-title">Наши <em>работы.</em></h2>
           <p className="section-copy mt-8">
             Показываем реальные решения «ПФ СОКОЛ» — от отдельных окон и дверей до полного остекления дома.
           </p>
           <div className="works-meta mt-10">
             <span>ПФ СОКОЛ / портфолио</span>
-            <span>{String(activeIndex + 1).padStart(2, '0')} / {String(workPhotos.length).padStart(2, '0')}</span>
           </div>
         </div>
 
@@ -543,6 +563,8 @@ function Home() {
             <a className="nav-link text-[hsl(var(--primary-foreground)/.7)]" href="#о-сообществе">О сообществе</a>
             <a className="nav-link text-[hsl(var(--primary-foreground)/.7)]" href="#ритм">Ритм</a>
             <button className="button-request" type="button" onClick={openRequest}>Оставить заявку <Arrow /></button>
+            <a className="header-phone-button" href={phoneUrl}><PhoneIcon /> <span>+7 (951) 379-28-30</span></a>
+            <button className="button-primary header-estimate-button" type="button" onClick={openEstimate}>Заполнить анкету для расчёта сметы <Arrow /></button>
             <a className="button-primary" href={vkUrl} target="_blank" rel="noopener noreferrer">Перейти в VK <ExternalMark /></a>
           </nav>
           <a className="mobile-phone-button" href={phoneUrl} aria-label="Позвонить в ПФ Сокол">
@@ -564,7 +586,10 @@ function Home() {
           <div className="relative z-10 flex flex-col gap-7 md:flex-row md:items-end md:justify-between">
             <div className="reveal delay-1">
               <p className="hero-lead">Окна, двери, стеклопакеты, перегородки, балконы и аксессуары с доставкой и монтажом в Новосибирске и соседних регионах.</p>
-              <a className="button-primary mt-6" href={vkUrl} target="_blank" rel="noopener noreferrer">Смотреть решения <Arrow /></a>
+              <div className="hero-actions mt-6">
+                <a className="button-primary" href={vkUrl} target="_blank" rel="noopener noreferrer">Смотреть решения <Arrow /></a>
+                <button className="button-primary hero-estimate-button" type="button" onClick={openEstimate}>Заполнить анкету для расчёта сметы <Arrow /></button>
+              </div>
             </div>
             <div className="scroll-cue hidden text-center md:block">Листайте ниже<span /></div>
           </div>
@@ -577,7 +602,7 @@ function Home() {
       <section className="section light-grid" id="о-сообществе">
         <div className="grid gap-14 md:grid-cols-[.85fr_1.15fr] md:gap-24">
           <div className="reveal">
-            <span className="eyebrow">01 / Зачем заглядывать</span>
+             <span className="eyebrow">Зачем заглядывать</span>
             <h2 className="section-heading display mt-7">Остекление, которое <em>работает.</em></h2>
           </div>
           <div className="reveal delay-1 flex flex-col justify-end">
@@ -586,16 +611,16 @@ function Home() {
           </div>
         </div>
         <div className="mt-24 grid gap-0 md:grid-cols-3">
-          {[
-            ['01', 'Окна и двери', 'Пластиковые, алюминиевые, раздвижные системы, а также металлические и стеклянные двери.'],
-            ['02', 'Стекло и перегородки', 'Стеклопакеты любой сложности и размеров, офисные и душевые перегородки.'],
-            ['03', 'Балконы и аксессуары', 'Балконы, лоджии, подоконники, сэндвич-панели, уголки и сливы.'],
-          ].map(([number, title, copy], index) => (
-            <article className={`path-card reveal ${index === 1 ? 'delay-1' : index === 2 ? 'delay-2' : ''}`} key={number}>
-              <span className="path-number">{number}</span>
-              <span className="path-arrow">↗</span>
-              <h3 className="path-title">{title}</h3>
-              <p className="path-copy mt-3">{copy}</p>
+          {serviceCards.map(({ title, copy, image, alt }, index) => (
+            <article className={`path-card reveal ${index === 1 ? 'delay-1' : index === 2 ? 'delay-2' : ''}`} key={title}>
+              <div className="path-card-media">
+                <img src={image} alt={alt} width="1200" height="816" loading="lazy" />
+                <span className="path-card-pixels" aria-hidden="true" />
+              </div>
+              <div className="path-card-content">
+                <h3 className="path-title">{title}</h3>
+                <p className="path-copy mt-3">{copy}</p>
+              </div>
             </article>
           ))}
         </div>
@@ -604,7 +629,7 @@ function Home() {
       <section className="dark-band section" id="ритм">
         <div className="grid items-end gap-12 md:grid-cols-[1fr_.72fr] md:gap-20">
           <div className="reveal">
-            <span className="eyebrow">02 / Возможности</span>
+            <span className="eyebrow">Возможности</span>
             <h2 className="section-heading display mt-7">Стеклопакеты <em>любой сложности.</em></h2>
           </div>
           <p className="section-copy reveal delay-1">В «ПФ СОКОЛ» можно подобрать решение под конкретный проём, задачу и интерьер — от окон в наличии до стеклопакетов любой сложности и размера.</p>
@@ -626,7 +651,7 @@ function Home() {
       <section className="section light-grid" id="услуги">
         <div className="grid gap-14 md:grid-cols-[.85fr_1.15fr] md:gap-24">
           <div className="reveal">
-            <span className="eyebrow">03 / Как работаем</span>
+            <span className="eyebrow">Как работаем</span>
             <h2 className="section-heading display mt-7">От замера до <em>монтажа.</em></h2>
           </div>
           <div className="reveal delay-1 service-detail-grid">
@@ -654,7 +679,7 @@ function Home() {
 
       <section className="section light-grid contact-section">
         <div className="reveal">
-          <span className="eyebrow">05 / Связаться</span>
+          <span className="eyebrow">Связаться</span>
           <div className="mt-8 grid gap-10 md:grid-cols-[1fr_1fr] md:items-end">
             <h2 className="section-heading display">Обсудим ваш<br /><em>проект.</em></h2>
             <p className="section-copy md:pb-2">Посмотрите актуальные материалы в VK или свяжитесь с «ПФ СОКОЛ» напрямую — по телефону или электронной почте.</p>
@@ -666,7 +691,7 @@ function Home() {
             <button className="button-primary" type="button" onClick={openEstimate}>Заполнить анкету для расчёта сметы <Arrow /></button>
             <div className="contact-links">
               <a className="button-ghost" href={phoneUrl}>+7 (951) 379-28-30 <Arrow /></a>
-              <a className="button-ghost" href={emailUrl}>Написать на email <ExternalMark /></a>
+              <a className="button-ghost" href={emailUrl}>Написать на почту <ExternalMark /></a>
             </div>
           </div>
         </div>

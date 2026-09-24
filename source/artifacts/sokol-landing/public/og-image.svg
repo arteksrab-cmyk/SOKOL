@@ -1,14 +1,53 @@
 <svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" viewBox="0 0 1200 630" fill="none">
-  <rect width="1200" height="630" fill="#111A38"/>
-  <path d="M910 -140C1090 40 1150 180 1280 280" stroke="#E9FF00" stroke-opacity=".18" stroke-width="2"/>
-  <path d="M860 -90C1050 100 1120 240 1270 350" stroke="#E9FF00" stroke-opacity=".08" stroke-width="70"/>
-  <path d="M0 82H1200M0 164H1200M0 246H1200M0 328H1200M0 410H1200M0 492H1200M0 574H1200" stroke="#F5F1E8" stroke-opacity=".05"/>
-  <path d="M82 0V630M164 0V630M246 0V630M328 0V630M410 0V630M492 0V630M574 0V630M656 0V630M738 0V630M820 0V630M902 0V630M984 0V630M1066 0V630M1148 0V630" stroke="#F5F1E8" stroke-opacity=".05"/>
-  <circle cx="990" cy="470" r="112" stroke="#E9FF00" stroke-opacity=".6"/>
-  <ellipse cx="990" cy="470" rx="78" ry="170" transform="rotate(55 990 470)" stroke="#E9FF00" stroke-opacity=".42"/>
-  <ellipse cx="990" cy="470" rx="52" ry="142" transform="rotate(-48 990 470)" stroke="#E9FF00" stroke-opacity=".32"/>
-  <text x="84" y="118" fill="#E9FF00" font-family="Arial, sans-serif" font-size="18" font-weight="700" letter-spacing="4">ОСТЕКЛЕНИЕ · МАТЕРИАЛЫ · РЕШЕНИЯ</text>
-  <text x="78" y="332" fill="#F5F1E8" font-family="Arial, sans-serif" font-size="164" font-weight="700" letter-spacing="-10">СОКОЛ</text>
-  <text x="88" y="398" fill="#F5F1E8" fill-opacity=".62" font-family="Arial, sans-serif" font-size="28">ПФ СОКОЛ — окна, двери, балконы и стеклопакеты</text>
-  <text x="992" y="496" fill="#E9FF00" font-family="Arial, sans-serif" font-size="92" font-weight="700" text-anchor="middle">С</text>
+  <defs>
+    <linearGradient id="gold" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop stop-color="#F4AF00"/>
+      <stop offset=".47" stop-color="#FFF36B"/>
+      <stop offset="1" stop-color="#FFD43B"/>
+    </linearGradient>
+    <linearGradient id="bird-gold" x1="100" y1="90" x2="1050" y2="540" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#C58D35"/>
+      <stop offset=".42" stop-color="#FFF0A0"/>
+      <stop offset=".68" stop-color="#E7B94D"/>
+      <stop offset="1" stop-color="#B77A2E"/>
+    </linearGradient>
+    <filter id="gold-glow" x="-30%" y="-30%" width="160%" height="160%">
+      <feGaussianBlur stdDeviation="7" result="blur"/>
+      <feMerge>
+        <feMergeNode in="blur"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+    <filter id="soft-glow" x="-40%" y="-40%" width="180%" height="180%">
+      <feGaussianBlur stdDeviation="18"/>
+    </filter>
+  </defs>
+
+  <rect width="1200" height="630" fill="#10182B"/>
+  <path d="M0 96H1200M0 192H1200M0 288H1200M0 384H1200M0 480H1200M0 576H1200" stroke="#F5F1E8" stroke-opacity=".045"/>
+  <path d="M96 0V630M192 0V630M288 0V630M384 0V630M480 0V630M576 0V630M672 0V630M768 0V630M864 0V630M960 0V630M1056 0V630M1152 0V630" stroke="#F5F1E8" stroke-opacity=".045"/>
+  <circle cx="1120" cy="38" r="340" fill="#1A2842" fill-opacity=".42" filter="url(#soft-glow)"/>
+  <path d="M810 -70C1030 55 1092 180 1250 276" stroke="#3CB7F4" stroke-opacity=".25" stroke-width="2"/>
+  <path d="M880 -80C1078 69 1129 198 1262 325" stroke="#E7B94D" stroke-opacity=".12" stroke-width="44"/>
+
+  <!-- The clean emblem from the site: house contour and falcon, without a second wordmark -->
+  <g transform="translate(130 57) scale(.82)" filter="url(#gold-glow)">
+    <g transform="translate(0 0) scale(1)">
+      <path d="M55 166V136L180 65l125 71v30" stroke="url(#gold)" stroke-width="4.5" stroke-linecap="square"/>
+      <path d="M66 171V142L180 77l114 65v29" stroke="#FFF36B" stroke-opacity=".72" stroke-width="1.5"/>
+      <path d="M55 156h26M279 156h26" stroke="#FFD43B" stroke-opacity=".92" stroke-width="1"/>
+      <g transform="translate(108 94) scale(1.4)">
+        <g transform="translate(0 104) scale(.1 -.1)">
+          <path fill="url(#bird-gold)" d="M785 851c-77-31-146-60-152-64-9-6-8-16 2-41 12-28 12-35 1-39-7-3-19-1-27 4-19 12-69 11-69-1 0-5 4-10 9-10 14 0 22-29 15-55-3-13-17-31-31-40-22-15-27-15-47-1-32 20-42 63-20 87 16 17 16 19-1 25-10 4-30 3-45-3-33-13-53-4-40 17 6 8 10 25 10 36 0 18-22 30-141 78-78 31-144 55-146 52-2-2 22-22 54-45l58-41-49 0c-55 0-54-7 7-32l42-17-37 0c-52-1-48-14 10-33 39-13 42-16 20-17-37-1-36-20 2-27 37-8 38-20 2-29l-27-7 35-13 35-12-33-7c-38-9-43-26-6-26 16 0 23-4 18-12-5-8 5-10 37-6 24 3 38 4 32 1-7-3-13-9-13-15 0-10 46-5 93 8 9 3 17 1 17-4 0-5-15-13-32-18-26-8-34-16-36-37-2-15 0-27 5-28 4 0 20-2 34-4 20-3 27 2 36 26 12 32 23 34 132 30 55-1 91-20 91-48 0-17 20-17 47 2 13 9 20 22 17 30-6 13-41 31-56 27-3-1-9 6-12 15-5 12-2 14 16 9 13-3 41-9 63-13 36-6 39-5 26 10-12 15-10 16 18 11 19-4 31-2 31 4 0 6 15 12 33 15l32 3-35 14-35 14 30 12 30 12-27 7c-34 9-29 20 12 28 38 8 39 27 3 28-23 1-20 4 20 17 57 19 61 32 10 33l-38 1 48 20c60 26 61 42 2 34-25-4-45-5-45-2 0 3 27 24 60 46 57 38 70 51 53 49-5 0-71-26-148-58zM491 647l21-41 18 35c10 18 17 34 17 35-1 1-19 4-39 7l-38 6 21-42zM414 484c3-9 6-18 6-20 0-13 31-1 40 16 10 18 8 20-21 20-24 0-30-3-25-16zM562 483c2-10 12-18 23-18 11 0 21 8 23 18 3 13-3 17-23 17-20 0-26-4-23-17zM472 452c-9-16-22-27-28-25-19 6-74-68-74-99 0-31 11-36 30-13 20 24 30 17 30-20 0-39 5-42 31-19 16 15 17 14 12-4-5-20 24-82 38-82 18 0 41 54 35 83l-6 31 22-24 23-24 10 36c10 34 11 35 33 21 21-15 22-14 22 19 0 26-9 42-39 72-24 24-40 33-43 25-2-7-10 2-17 19-18 42-54 44-79 4z"/>
+        </g>
+      </g>
+    </g>
+  </g>
+
+  <g transform="translate(438 0)">
+    <text x="0" y="250" fill="url(#gold)" font-family="Arial, sans-serif" font-size="164" font-weight="700" letter-spacing="-8" filter="url(#gold-glow)">СОКОЛ</text>
+    <path d="M4 286H686" stroke="url(#gold)" stroke-opacity=".72" stroke-width="2"/>
+    <text x="5" y="342" fill="#FFF0A0" font-family="Arial, sans-serif" font-size="28" font-weight="700" letter-spacing="5">ПРОИЗВОДСТВЕННАЯ ФИРМА</text>
+    <text x="5" y="394" fill="#F5F1E8" fill-opacity=".66" font-family="Arial, sans-serif" font-size="22" letter-spacing="1.2">ОКНА · ДВЕРИ · СТЕКЛОПАКЕТЫ · БАЛКОНЫ</text>
+  </g>
 </svg>
