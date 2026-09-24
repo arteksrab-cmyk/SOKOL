@@ -115,13 +115,9 @@
     cp /var/www/sokol-site/deploy/nginx/sokol.conf.example /etc/nginx/sites-available/sokol.conf
     nano /etc/nginx/sites-available/sokol.conf
 
-В строке server_name заменить:
+Для ПФ СОКОЛ в строке server_name использовать:
 
-    YOUR_DOMAIN.ru www.YOUR_DOMAIN.ru
-
-на настоящий домен сайта, например:
-
-    pfsokol.ru www.pfsokol.ru
+    pf-sokol.ru www.pf-sokol.ru
 
 Сохранить файл и выполнить:
 
@@ -136,7 +132,7 @@
 
 Открыть в браузере:
 
-    http://ВАШ_ДОМЕН/
+    http://pf-sokol.ru/
 
 Проверить:
 - главная страница открывается;
@@ -149,7 +145,7 @@
 
 Когда домен уже направлен на IP сервера и сайт открывается по HTTP:
 
-    certbot --nginx -d ВАШ_ДОМЕН -d www.ВАШ_ДОМЕН
+    certbot --nginx -d pf-sokol.ru -d www.pf-sokol.ru
 
 Вопросы Certbot отвечать так:
 - указать рабочую почту;
@@ -158,7 +154,12 @@
 
 После этого сайт открывать по адресу:
 
-    https://ВАШ_ДОМЕН/
+    https://pf-sokol.ru/
+
+ПЕРЕЕЗД УЖЕ РАБОТАЮЩЕГО САЙТА НА НОВЫЙ ДОМЕН
+---------------------------------------------
+
+Не переустанавливайте сайт и не копируйте архив заново. Сначала направьте DNS нового домена на текущий IP сервера, затем добавьте новый домен в действующую конфигурацию Nginx и выпустите для него HTTPS-сертификат. Старый домен оставьте подключённым до проверки нового HTTPS-адреса; после проверки настройте с него постоянное перенаправление на https://pf-sokol.ru/. Старый сертификат нужен, пока работает это перенаправление.
 
 ПРОВЕРКА ЗАЯВКИ
 ----------------
@@ -193,19 +194,17 @@
 
     systemctl reload nginx
 
-ОБНОВЛЕНИЕ САЙТА ПОСЛЕ НОВОГО АРХИВА
-------------------------------------
+ОБНОВЛЕНИЕ САЙТА ИЗ GITHUB
+--------------------------
 
-Перед обновлением сохранить текущие настройки:
+После загрузки изменений в GitHub обновить уже установленный сайт:
 
-    cp /etc/sokol-site/sokol-api.env /root/sokol-api.env.backup
-
-Дальше повторить шаг 4, затем восстановить настройки:
-
-    cp /root/sokol-api.env.backup /etc/sokol-site/sokol-api.env
-    chmod 600 /etc/sokol-site/sokol-api.env
-    systemctl restart sokol-api
+    cd /var/www/sokol-site
+    git pull --ff-only origin main
+    nginx -t
     systemctl reload nginx
+
+Перезапускать API нужно только при изменении его серверной сборки.
 
 НЕ УДАЛЯТЬ:
 - /etc/sokol-site/sokol-api.env;

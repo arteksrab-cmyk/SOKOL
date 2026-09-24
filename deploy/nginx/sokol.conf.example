@@ -2,7 +2,7 @@ server {
     listen 80;
     listen [::]:80;
 
-    server_name YOUR_DOMAIN.ru www.YOUR_DOMAIN.ru;
+    server_name pf-sokol.ru www.pf-sokol.ru;
 
     root /var/www/sokol-site/public;
     index index.html;
