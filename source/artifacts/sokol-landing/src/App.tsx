@@ -38,6 +38,14 @@ const workPhotos = [
   { src: workPhoto09, alt: 'Готовое оконное решение' },
   { src: workPhoto10, alt: 'Остекление и монтаж на объекте' },
   { src: workPhoto11, alt: 'Оконная конструкция после монтажа' },
+  { src: sitePath('/works/work-12-building-window-installation.jpg'), alt: 'Монтаж остекления на фасаде здания' },
+  { src: sitePath('/works/work-13-glazed-interior-door.jpg'), alt: 'Межкомнатная дверь с матовым стеклом' },
+  { src: sitePath('/works/work-14-apartment-window.jpg'), alt: 'Окно в квартире с радиатором отопления' },
+  { src: sitePath('/works/work-15-wooden-house-windows.jpg'), alt: 'Окна в деревянном доме' },
+  { src: sitePath('/works/work-16-terrace-glazing.jpg'), alt: 'Остекление террасы деревянного дома' },
+  { src: sitePath('/works/work-17-panoramic-veranda-glazing.jpg'), alt: 'Панорамное остекление веранды' },
+  { src: sitePath('/works/work-18-new-house-windows.jpg'), alt: 'Установленные окна в деревянном доме' },
+  { src: sitePath('/works/work-19-interior-window-installation.jpg'), alt: 'Окно с подоконником в помещении' },
 ] as const;
 
 const serviceCards = [
