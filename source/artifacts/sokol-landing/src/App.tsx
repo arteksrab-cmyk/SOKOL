@@ -1,23 +1,15 @@
-import { type FormEvent, type ReactNode, useEffect, useRef, useState } from 'react';
+import { type FormEvent, type ReactNode, useEffect, useState } from 'react';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { ErrorBoundary } from '@/components/error-boundary';
 import { Toaster } from '@/components/ui/toaster';
 import { TooltipProvider } from '@/components/ui/tooltip';
 import { SokolEagleMark } from '@/components/sokol-eagle-mark';
+import { OrderSteps } from '@/components/order-steps';
+import { TrustHighlights } from '@/components/trust-highlights';
+import { WorksGallery } from '@/components/works-gallery';
 import { DocumentsPage, LegalDocumentPage, legalDocuments } from '@/pages/legal';
 import NotFound from '@/pages/not-found';
 import { Route, Switch, useLocation, Router as WouterRouter } from 'wouter';
-import workPhoto01 from '@assets/q887KnWlW01vgzChEzTX4e_eWjkFaH3w50WwgHHDx898g78fj4bshsQVGQl_f2_1789833489841.jpg';
-import workPhoto02 from '@assets/xdRaF88Lf3jpg0cgWhmF7tAp0fRIxlbz1DFojgVHYLOTAv8htpRCC8VlnEXNqM_1789833489864.jpg';
-import workPhoto03 from '@assets/53yqnKQq30i2h1BpyCcqC88zIM9HNW6jH3UjtphlHkOMIU4KQB4Q6q06XIfXNP_1789833489884.jpg';
-import workPhoto04 from '@assets/Zf1im9q09Pj34LkUbs6vpqPfk0OyFXYvK4W-SClWADkkyfudv7_VLib11emVJO_1789833489908.jpg';
-import workPhoto05 from '@assets/Dq5PhjWjB51BPLOzSHnOWK5p-3iRwSJrQC0VMl-m0FvykZL_x0mEpPEH97deaV_1789833489933.jpg';
-import workPhoto06 from '@assets/rhZGOhXvAFMa5jP5AzOGO-u83U9d9p80ZGIxx3axoM8OYqAa84u3cvnS3YfXcG_1789833489957.jpg';
-import workPhoto07 from '@assets/jlO26ekiNiEbTFidH32mVIx5JQRVF_sgO-i-7tRoamXvWaAaevfb-xrd31hsWu_1789833489982.jpg';
-import workPhoto08 from '@assets/yBt4zdfDMt9FpdOH63mKunsNOypQjAsDSa0bs_YVi-QAw_8S-oIjv_WwJdqxPw_1789833490014.jpg';
-import workPhoto09 from '@assets/VgU1TIApVI-GyPl_1zcgj7YAGBxYOqQ36cM5Ug1o3Qgkl_4nQgGj2PYtV2lVI6_1789833490043.jpg';
-import workPhoto10 from '@assets/9JPoP1kW1ePVUDn_CgzwBjZQKETqVcVpOgqSyrNUwINdiLwkWFQSzN6uoyUZY__1789833490065.jpg';
-import workPhoto11 from '@assets/wN1_dWgpez6npllKSnximKDTGTFnphyLRYj-CO1QA5SqhdbuYD1-lcVO2KIVm0_1789833490087.jpg';
 
 const queryClient = new QueryClient();
 const vkUrl = 'https://vk.ru/pf_sokol';
@@ -25,28 +17,6 @@ const phoneUrl = 'tel:+79513792830';
 const emailUrl = 'mailto:pfsokol54@gmail.com';
 const cookieConsentKey = 'cookie_consent';
 const sitePath = (path: string) => `${import.meta.env.BASE_URL.replace(/\/$/, '')}${path}`;
-
-const workPhotos = [
-  { src: workPhoto01, alt: 'Остекление частного дома' },
-  { src: workPhoto02, alt: 'Профили и комплектующие для окон' },
-  { src: workPhoto03, alt: 'Окно в кирпичном доме' },
-  { src: workPhoto04, alt: 'Панорамное окно в кирпичном доме' },
-  { src: workPhoto05, alt: 'Оконный блок в квартире' },
-  { src: workPhoto06, alt: 'Реализованный объект ПФ СОКОЛ' },
-  { src: workPhoto07, alt: 'Оконное решение на объекте' },
-  { src: workPhoto08, alt: 'Остекление жилого объекта' },
-  { src: workPhoto09, alt: 'Готовое оконное решение' },
-  { src: workPhoto10, alt: 'Остекление и монтаж на объекте' },
-  { src: workPhoto11, alt: 'Оконная конструкция после монтажа' },
-  { src: sitePath('/works/work-12-building-window-installation.jpg'), alt: 'Монтаж остекления на фасаде здания' },
-  { src: sitePath('/works/work-13-glazed-interior-door.jpg'), alt: 'Межкомнатная дверь с матовым стеклом' },
-  { src: sitePath('/works/work-14-apartment-window.jpg'), alt: 'Окно в квартире с радиатором отопления' },
-  { src: sitePath('/works/work-15-wooden-house-windows.jpg'), alt: 'Окна в деревянном доме' },
-  { src: sitePath('/works/work-16-terrace-glazing.jpg'), alt: 'Остекление террасы деревянного дома' },
-  { src: sitePath('/works/work-17-panoramic-veranda-glazing.jpg'), alt: 'Панорамное остекление веранды' },
-  { src: sitePath('/works/work-18-new-house-windows.jpg'), alt: 'Установленные окна в деревянном доме' },
-  { src: sitePath('/works/work-19-interior-window-installation.jpg'), alt: 'Окно с подоконником в помещении' },
-] as const;
 
 const serviceCards = [
   {
@@ -107,107 +77,6 @@ function PhoneIcon() {
     <svg width="15" height="15" viewBox="0 0 24 24" fill="none" aria-hidden="true">
       <path d="M7.5 4.5 5.4 5.8c-.8.5-1.1 1.5-.7 2.4 2.2 5.2 6.3 9.3 11.5 11.5.9.4 1.9.1 2.4-.7l1.3-2.1c.4-.7.2-1.6-.5-2l-2.7-1.6c-.6-.4-1.4-.2-1.8.3l-1 1.2a15.7 15.7 0 0 1-4.7-4.7l1.2-1c.5-.4.7-1.2.3-1.8L9.5 5c-.4-.7-1.3-.9-2-.5Z" fill="currentColor" />
     </svg>
-  );
-}
-
-function WorksGallery() {
-  const [activeIndex, setActiveIndex] = useState(0);
-  const [isPaused, setIsPaused] = useState(false);
-  const touchStartX = useRef<number | null>(null);
-
-  const goTo = (index: number) => {
-    setActiveIndex((index + workPhotos.length) % workPhotos.length);
-  };
-
-  useEffect(() => {
-    if (isPaused) return;
-
-    const intervalId = window.setInterval(() => {
-      setActiveIndex((current) => (current + 1) % workPhotos.length);
-    }, 5200);
-
-    return () => window.clearInterval(intervalId);
-  }, [isPaused]);
-
-  const handleTouchStart = (event: React.TouchEvent<HTMLDivElement>) => {
-    touchStartX.current = event.changedTouches[0]?.clientX ?? null;
-  };
-
-  const handleTouchEnd = (event: React.TouchEvent<HTMLDivElement>) => {
-    if (touchStartX.current === null) return;
-
-    const touchEndX = event.changedTouches[0]?.clientX ?? touchStartX.current;
-    const distance = touchEndX - touchStartX.current;
-    if (Math.abs(distance) > 45) {
-      goTo(activeIndex + (distance < 0 ? 1 : -1));
-    }
-    touchStartX.current = null;
-  };
-
-  const activePhoto = workPhotos[activeIndex];
-
-  return (
-    <section className="works-section section light-grid" id="наши-работы" aria-labelledby="works-title">
-      <div className="works-layout">
-        <div className="reveal">
-          <span className="eyebrow">Наши объекты</span>
-          <h2 className="section-heading display mt-7" id="works-title">Наши <em>работы.</em></h2>
-          <p className="section-copy mt-8">
-            Показываем реальные решения «ПФ СОКОЛ» — от отдельных окон и дверей до полного остекления дома.
-          </p>
-          <div className="works-meta mt-10">
-            <span>ПФ СОКОЛ / портфолио</span>
-          </div>
-        </div>
-
-        <div
-          className="works-carousel reveal delay-1"
-          role="region"
-          aria-roledescription="carousel"
-          aria-label="Фотографии выполненных работ"
-          tabIndex={0}
-          onKeyDown={(event) => {
-            if (event.key === 'ArrowLeft') goTo(activeIndex - 1);
-            if (event.key === 'ArrowRight') goTo(activeIndex + 1);
-          }}
-          onMouseEnter={() => setIsPaused(true)}
-          onMouseLeave={() => setIsPaused(false)}
-          onTouchStart={handleTouchStart}
-          onTouchEnd={handleTouchEnd}
-        >
-          <div className="works-frame">
-            <img
-              key={activePhoto.src}
-              className="works-image"
-              src={activePhoto.src}
-              alt={activePhoto.alt}
-              draggable="false"
-            />
-            <span className="works-frame-caption">Реализованный объект</span>
-          </div>
-          <div className="works-controls">
-            <button className="works-arrow works-arrow-previous" type="button" aria-label="Предыдущая работа" onClick={() => goTo(activeIndex - 1)}>
-              <Arrow diagonal={false} />
-            </button>
-            <div className="works-dots" aria-label="Выбрать работу">
-              {workPhotos.map((photo, index) => (
-                <button
-                  className={`works-dot ${index === activeIndex ? 'is-active' : ''}`}
-                  type="button"
-                  key={photo.src}
-                  aria-label={`Работа ${index + 1}`}
-                  aria-current={index === activeIndex ? 'true' : undefined}
-                  onClick={() => goTo(index)}
-                />
-              ))}
-            </div>
-            <button className="works-arrow" type="button" aria-label="Следующая работа" onClick={() => goTo(activeIndex + 1)}>
-              <Arrow />
-            </button>
-          </div>
-        </div>
-      </div>
-    </section>
   );
 }
 
@@ -594,6 +463,7 @@ function Home() {
           <div className="relative z-10 flex flex-col gap-7 md:flex-row md:items-end md:justify-between">
             <div className="reveal delay-1">
               <p className="hero-lead">Окна, двери, стеклопакеты, перегородки, балконы и аксессуары с доставкой и монтажом в Новосибирске и соседних регионах.</p>
+              <TrustHighlights />
               <div className="hero-actions mt-6">
                 <a className="button-primary" href={vkUrl} target="_blank" rel="noopener noreferrer">Смотреть решения <Arrow /></a>
                 <button className="button-primary hero-estimate-button" type="button" onClick={openEstimate}>Заполнить анкету для расчёта сметы <Arrow /></button>
@@ -682,6 +552,8 @@ function Home() {
           </div>
         </div>
       </section>
+
+      <OrderSteps onRequest={openRequest} />
 
       <WorksGallery />
 
