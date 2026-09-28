@@ -3,7 +3,6 @@ import { ArrowLeft, ArrowRight, Expand, Pause, Play, X } from 'lucide-react';
 import workPhoto01 from '@assets/q887KnWlW01vgzChEzTX4e_eWjkFaH3w50WwgHHDx898g78fj4bshsQVGQl_f2_1789833489841.jpg';
 import workPhoto02 from '@assets/xdRaF88Lf3jpg0cgWhmF7tAp0fRIxlbz1DFojgVHYLOTAv8htpRCC8VlnEXNqM_1789833489864.jpg';
 import workPhoto03 from '@assets/53yqnKQq30i2h1BpyCcqC88zIM9HNW6jH3UjtphlHkOMIU4KQB4Q6q06XIfXNP_1789833489884.jpg';
-import workPhoto04 from '@assets/Zf1im9q09Pj34LkUbs6vpqPfk0OyFXYvK4W-SClWADkkyfudv7_VLib11emVJO_1789833489908.jpg';
 import workPhoto05 from '@assets/Dq5PhjWjB51BPLOzSHnOWK5p-3iRwSJrQC0VMl-m0FvykZL_x0mEpPEH97deaV_1789833489933.jpg';
 import workPhoto06 from '@assets/rhZGOhXvAFMa5jP5AzOGO-u83U9d9p80ZGIxx3axoM8OYqAa84u3cvnS3YfXcG_1789833489957.jpg';
 import workPhoto07 from '@assets/jlO26ekiNiEbTFidH32mVIx5JQRVF_sgO-i-7tRoamXvWaAaevfb-xrd31hsWu_1789833489982.jpg';
@@ -27,7 +26,6 @@ const workPhotos: WorkPhoto[] = [
   { src: workPhoto01, alt: 'Остекление частного дома', category: 'Дома' },
   { src: workPhoto02, alt: 'Профили и комплектующие для окон', category: 'Другие решения' },
   { src: workPhoto03, alt: 'Окно в кирпичном доме', category: 'Дома' },
-  { src: workPhoto04, alt: 'Панорамное окно в кирпичном доме', category: 'Дома' },
   { src: workPhoto05, alt: 'Оконный блок в квартире', category: 'Квартиры' },
   { src: workPhoto06, alt: 'Реализованный объект ПФ СОКОЛ', category: 'Другие решения' },
   { src: workPhoto07, alt: 'Оконное решение на объекте', category: 'Другие решения' },
