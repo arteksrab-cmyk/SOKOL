@@ -7,6 +7,7 @@ import { SokolEagleMark } from '@/components/sokol-eagle-mark';
 import { OrderSteps } from '@/components/order-steps';
 import { TrustHighlights } from '@/components/trust-highlights';
 import { WorksGallery } from '@/components/works-gallery';
+import { WindowShowcase } from '@/components/window-showcase';
 import { DocumentsPage, LegalDocumentPage, legalDocuments } from '@/pages/legal';
 import NotFound from '@/pages/not-found';
 import { Route, Switch, useLocation, Router as WouterRouter } from 'wouter';
@@ -512,15 +513,18 @@ function Home() {
           </div>
           <p className="section-copy reveal delay-1">В «ПФ СОКОЛ» можно подобрать решение под конкретный проём, задачу и интерьер — от окон в наличии до стеклопакетов любой сложности и размера.</p>
         </div>
-        <div className="signal-panel mt-20 p-7 sm:p-12 md:mt-28 md:p-20">
-          <div className="signal-content flex min-h-[300px] flex-col justify-between gap-16">
-            <div className="flex items-center justify-between">
+        <div className="signal-panel mt-20 p-5 sm:p-8 md:mt-28 md:p-12 xl:p-16">
+          <div className="signal-content signal-content--showcase">
+            <div className="signal-showcase-meta">
               <span className="signal-meta">ПФ СОКОЛ / решения</span>
               <span className="signal-meta">VK / pf_sokol</span>
             </div>
-            <div>
+            <div className="signal-showcase-copy">
               <h3 className="signal-title display">Найдите своё<br />решение.</h3>
-              <a className="button-dark mt-8 w-fit button-primary" href={vkUrl} target="_blank" rel="noopener noreferrer">Перейти в VK <Arrow diagonal /></a>
+              <a className="button-dark mt-7 w-fit button-primary" href={vkUrl} target="_blank" rel="noopener noreferrer">Перейти в VK <Arrow diagonal /></a>
+            </div>
+            <div className="glazing-visual">
+              <WindowShowcase />
             </div>
           </div>
         </div>
