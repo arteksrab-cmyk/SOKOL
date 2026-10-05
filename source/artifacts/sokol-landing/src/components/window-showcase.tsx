@@ -6,21 +6,24 @@ import type { Camera } from './model-types';
 import { buildWindowScene, type WindowScene } from './window-models';
 
 const scenes: Array<{ id: WindowScene; eyebrow: string; title: string; description: string; camera: Camera }> = [
-  { id: 'facade', eyebrow: '01 / Фасад', title: 'Окно в доме', description: 'Правая створка открывается внутрь, левая остаётся закрытой.', camera: { yaw: 0.15, pitch: 0.18, zoom: 1 } },
-  { id: 'arched', eyebrow: '02 / Архитектура', title: 'Арочные окна', description: 'Нестандартная форма для входных групп, витрин и частных домов.', camera: { yaw: 0.2, pitch: 0.22, zoom: 0.96 } },
+  { id: 'facade', eyebrow: '01', title: 'Окно в доме', description: 'Правая створка открывается внутрь, левая остаётся закрытой.', camera: { yaw: 0.15, pitch: 0.18, zoom: 1 } },
+  { id: 'arched', eyebrow: '02', title: 'Арочные окна', description: 'Нестандартная форма для входных групп, витрин и частных домов.', camera: { yaw: 0.2, pitch: 0.22, zoom: 0.96 } },
+  { id: 'sloped', eyebrow: '03', title: 'Нестандартные архитектурные решения', description: 'Левая секция и верхняя часть остаются глухими; нижняя правая створка открывается внутрь, оставляя проём открытым.', camera: { yaw: -0.23, pitch: 0.07, zoom: 1 } },
 ];
 
 const clampZoom = (zoom: number) => Math.max(0.68, Math.min(1.8, zoom));
 
 export function WindowShowcase() {
   const [activeScene, setActiveScene] = useState<WindowScene>('facade');
-  const [isOpen, setIsOpen] = useState(false);
+  const [openScenes, setOpenScenes] = useState<{ facade: boolean; sloped: boolean }>({ facade: false, sloped: false });
   const [camera, setCamera] = useState<Camera>(scenes[0].camera);
   const [stageSize, setStageSize] = useState({ width: 0, height: 0 });
   const [isDragging, setIsDragging] = useState(false);
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const dragRef = useRef<{ pointerId: number; x: number; y: number } | null>(null);
   const selected = scenes.find((scene) => scene.id === activeScene) ?? scenes[0];
+  const canOpenActiveScene = activeScene === 'facade' || activeScene === 'sloped';
+  const isOpen = canOpenActiveScene ? openScenes[activeScene] : false;
 
   useEffect(() => {
     const stage = canvasRef.current?.parentElement;
@@ -48,6 +51,10 @@ export function WindowShowcase() {
   };
   const zoomBy = (factor: number) => setCamera((current) => ({ ...current, zoom: clampZoom(current.zoom * factor) }));
   const resetCamera = () => setCamera(selected.camera);
+  const toggleSash = () => {
+    if (!canOpenActiveScene) return;
+    setOpenScenes((current) => ({ ...current, [activeScene]: !current[activeScene] }));
+  };
 
   const handlePointerDown = (event: PointerEvent<HTMLCanvasElement>) => {
     if (event.button !== 0) return;
@@ -84,9 +91,9 @@ export function WindowShowcase() {
     } else if (event.key === '0') {
       event.preventDefault();
       resetCamera();
-    } else if (event.key === ' ' && activeScene === 'facade') {
+    } else if (event.key === ' ' && canOpenActiveScene) {
       event.preventDefault();
-      setIsOpen((open) => !open);
+      toggleSash();
     }
   };
 
@@ -105,7 +112,7 @@ export function WindowShowcase() {
           className="window-showcase__canvas"
           role="application"
           tabIndex={0}
-          aria-label={`${selected.title}. ${selected.description}. Стрелки вращают модель, плюс и минус меняют масштаб, пробел ${activeScene === 'facade' ? 'открывает или закрывает створку' : 'не используется'}.`}
+          aria-label={`${selected.title}. ${selected.description}. Стрелки вращают модель, плюс и минус меняют масштаб, пробел ${canOpenActiveScene ? 'открывает или закрывает створку' : 'не используется'}.`}
           data-testid="canvas-window-model"
           onPointerDown={handlePointerDown}
           onPointerMove={handlePointerMove}
@@ -116,7 +123,7 @@ export function WindowShowcase() {
           onKeyDown={handleKeyDown}
         />
         <div className="window-showcase__badge" aria-hidden="true"><Box size={13} /><strong>3D</strong><span>ДЕТАЛЬНЫЙ УЗЕЛ</span></div>
-        <div className="window-showcase__model-label">
+        <div className={`window-showcase__model-label${selected.id === 'sloped' ? ' is-long' : ''}`}>
           <strong>{selected.eyebrow}</strong>
           <span>{selected.title}</span>
         </div>
@@ -131,7 +138,7 @@ export function WindowShowcase() {
           {scenes.map((scene) => (
             <button
               key={scene.id}
-              className={`window-showcase__tab${activeScene === scene.id ? ' is-active' : ''}`}
+              className={`window-showcase__tab${activeScene === scene.id ? ' is-active' : ''}${scene.id === 'sloped' ? ' is-long' : ''}`}
               type="button"
               role="tab"
               aria-selected={activeScene === scene.id}
@@ -144,10 +151,10 @@ export function WindowShowcase() {
           ))}
         </div>
         <div className="window-showcase__action">
-          {activeScene === 'facade' ? (
-            <button className={`window-showcase__toggle${isOpen ? ' is-open' : ''}`} type="button" aria-pressed={isOpen} onClick={() => setIsOpen((open) => !open)} data-testid="button-window-toggle">
+          {canOpenActiveScene ? (
+            <button className={`window-showcase__toggle${isOpen ? ' is-open' : ''}`} type="button" aria-pressed={isOpen} onClick={toggleSash} data-testid="button-window-toggle">
               <span className="window-showcase__toggle-dot" aria-hidden="true" />
-              {isOpen ? 'Закрыть правую створку' : 'Открыть правую створку'}
+              {isOpen ? (activeScene === 'sloped' ? 'Закрыть створку' : 'Закрыть правую створку') : (activeScene === 'sloped' ? 'Открыть створку' : 'Открыть правую створку')}
             </button>
           ) : (
             <span className="window-showcase__hint">Вращайте модель, чтобы рассмотреть узел</span>

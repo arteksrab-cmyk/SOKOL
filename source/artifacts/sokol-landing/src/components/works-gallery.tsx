@@ -41,6 +41,7 @@ const workPhotos: WorkPhoto[] = [
   { src: sitePath('/works/work-17-panoramic-veranda-glazing.jpg'), alt: 'Панорамное остекление веранды', category: 'Балконы и террасы' },
   { src: sitePath('/works/work-18-new-house-windows.jpg'), alt: 'Установленные окна в деревянном доме', category: 'Дома' },
   { src: sitePath('/works/work-19-interior-window-installation.jpg'), alt: 'Окно с подоконником в помещении', category: 'Квартиры' },
+  { src: sitePath('/works/work-20-sloped-house-windows.jpg'), alt: 'Два окна нестандартной формы на фасаде частного дома', category: 'Дома' },
 ];
 
 const workFilters: { value: WorkFilter; label: string; id: string }[] = [

@@ -1,6 +1,6 @@
 import type { Face, Point3 } from './model-types';
 
-export type WindowScene = 'facade' | 'arched';
+export type WindowScene = 'facade' | 'arched' | 'sloped';
 
 const framePalette = ['#E8EDF0', '#8B9AA2', '#C4D0D5', '#61727B', '#A9B8BE', '#F7F9F8'] as const;
 const darkFramePalette = ['#4C5B61', '#1F2C31', '#35464D', '#152126', '#66767D', '#6E7E84'] as const;
@@ -92,9 +92,11 @@ function addSash(
   angle: number,
   handleX: number | null,
   handleDirection: -1 | 1 = 1,
+  bounds: { bottom?: number; top?: number; handleY?: number } = {},
 ) {
-  const bottom = -1.48;
-  const top = 1.48;
+  const bottom = bounds.bottom ?? -1.48;
+  const top = bounds.top ?? 1.48;
+  const handleY = bounds.handleY ?? 0.17;
   const z = hingeZ;
   const panelCorners = [[left, bottom, z], [right, bottom, z], [right, top, z], [left, top, z]] as Point3[];
   addPlane(faces, panelCorners.map((point) => rotateAroundHinge(point, hingeX, hingeZ, angle)), '#9BBFC4', 'rgba(24, 44, 49, 0.5)');
@@ -103,9 +105,9 @@ function addSash(
   addRotatedBar(faces, [left, bottom, z + 0.05], [right, bottom, z + 0.05], 0.14, 0.14, framePalette, hingeX, hingeZ, angle);
   addRotatedBar(faces, [left, top, z + 0.05], [right, top, z + 0.05], 0.14, 0.14, framePalette, hingeX, hingeZ, angle);
   if (handleX !== null) {
-    addRotatedBar(faces, [handleX, -0.05, z + 0.13], [handleX, 0.22, z + 0.13], 0.06, 0.08, darkFramePalette, hingeX, hingeZ, angle);
+    addRotatedBar(faces, [handleX, handleY - 0.22, z + 0.13], [handleX, handleY + 0.05, z + 0.13], 0.06, 0.08, darkFramePalette, hingeX, hingeZ, angle);
     const leverEndX = handleX + handleDirection * 0.15;
-    addRotatedBar(faces, [handleX, 0.17, z + 0.13], [leverEndX, 0.17, z + 0.13], 0.07, 0.08, darkFramePalette, hingeX, hingeZ, angle);
+    addRotatedBar(faces, [handleX, handleY, z + 0.13], [leverEndX, handleY, z + 0.13], 0.07, 0.08, darkFramePalette, hingeX, hingeZ, angle);
   }
 }
 
@@ -126,6 +128,137 @@ function buildFacadeScene(isOpen: boolean): Face[] {
   const openingAngle = isOpen ? -1.05 : 0;
   addSash(faces, -2.43, -0.09, -0.09, hingeZ, 0, null);
   addSash(faces, 0.09, 2.43, 2.43, hingeZ, openingAngle, 0.09, 1);
+  return faces;
+}
+
+function buildSlopedScene(isOpen: boolean): Face[] {
+  const faces: Face[] = [];
+  const outer: Point3[] = [
+    [-2.7, -1.72, 0.48],
+    [-2.7, -0.72, 0.48],
+    [2.7, 1.62, 0.48],
+    [2.7, -1.72, 0.48],
+  ];
+  const inner: Point3[] = [
+    [-2.43, -1.49, 0.48],
+    [-2.43, -0.83, 0.48],
+    [2.43, 1.34, 0.48],
+    [2.43, -1.49, 0.48],
+  ];
+  const backZ = 0.14;
+  const frontZ = 0.57;
+  const splitX = 0.08;
+  const hingeX = 0.24;
+  const hingeZ = 0.58;
+  const transomY = 0.18;
+  const openingAngle = isOpen ? 0.96 : 0;
+  const wallDepth = 0.32;
+  // Seat the original frame against the wall, without a floating sloped gap.
+  const wallFrontZ = backZ;
+  const wallBackZ = wallFrontZ - wallDepth;
+  const rakeY = (x: number) => -0.83 + ((x + 2.43) / 4.86) * 2.17;
+  const frameFront = '#E8EDF0';
+  const frameSide = '#A9B8BE';
+
+  const wallOuter: Point3[] = [
+    [-3.1, -2.05, 0],
+    [-3.1, 2.05, 0],
+    [3.1, 2.05, 0],
+    [3.1, -2.05, 0],
+  ];
+  for (let index = 0; index < outer.length; index += 1) {
+    const next = (index + 1) % outer.length;
+    const wallA = wallOuter[index];
+    const wallB = wallOuter[next];
+    const openingA = outer[index];
+    const openingB = outer[next];
+    addPlane(faces, [
+      [wallA[0], wallA[1], wallFrontZ],
+      [wallB[0], wallB[1], wallFrontZ],
+      [openingB[0], openingB[1], wallFrontZ],
+      [openingA[0], openingA[1], wallFrontZ],
+    ], wallPalette[2], 'rgba(95, 89, 79, 0.3)');
+    addPlane(faces, [
+      [wallA[0], wallA[1], wallBackZ],
+      [openingA[0], openingA[1], wallBackZ],
+      [openingB[0], openingB[1], wallBackZ],
+      [wallB[0], wallB[1], wallBackZ],
+    ], wallPalette[3], 'rgba(95, 89, 79, 0.3)');
+    // Close the outside of the wall as well as the aperture: every edge
+    // connects the same two depth planes, just like the solid walls in 01.
+    addPlane(faces, [
+      [wallA[0], wallA[1], wallBackZ],
+      [wallB[0], wallB[1], wallBackZ],
+      [wallB[0], wallB[1], wallFrontZ],
+      [wallA[0], wallA[1], wallFrontZ],
+    ], wallPalette[4], 'rgba(95, 89, 79, 0.3)');
+    addPlane(faces, [
+      [openingA[0], openingA[1], wallBackZ],
+      [openingB[0], openingB[1], wallBackZ],
+      [openingB[0], openingB[1], wallFrontZ],
+      [openingA[0], openingA[1], wallFrontZ],
+    ], wallPalette[(index + 1) % wallPalette.length], 'rgba(95, 89, 79, 0.42)');
+  }
+  addBox(faces, [0, -1.89, 0.38], [6.05, 0.18, 0.72], framePalette);
+  for (let index = 0; index < outer.length; index += 1) {
+    const next = (index + 1) % outer.length;
+    const outerA = outer[index];
+    const outerB = outer[next];
+    const innerA = inner[index];
+    const innerB = inner[next];
+    addPlane(faces, [
+      [outerA[0], outerA[1], frontZ],
+      [outerB[0], outerB[1], frontZ],
+      [innerB[0], innerB[1], frontZ],
+      [innerA[0], innerA[1], frontZ],
+    ], frameFront, 'rgba(72, 91, 97, 0.42)');
+    addPlane(faces, [
+      [outerA[0], outerA[1], backZ],
+      [outerB[0], outerB[1], backZ],
+      [outerB[0], outerB[1], frontZ],
+      [outerA[0], outerA[1], frontZ],
+    ], frameSide, 'rgba(72, 91, 97, 0.38)');
+    addPlane(faces, [
+      [innerA[0], innerA[1], backZ],
+      [innerA[0], innerA[1], frontZ],
+      [innerB[0], innerB[1], frontZ],
+      [innerB[0], innerB[1], backZ],
+    ], frameSide, 'rgba(72, 91, 97, 0.38)');
+    addPlane(faces, [
+      [outerA[0], outerA[1], backZ],
+      [innerA[0], innerA[1], backZ],
+      [innerB[0], innerB[1], backZ],
+      [outerB[0], outerB[1], backZ],
+    ], frameSide, 'rgba(72, 91, 97, 0.38)');
+  }
+
+  addPlane(faces, [
+    [-2.43, -1.49, 0.52],
+    [splitX, -1.49, 0.52],
+    [splitX, rakeY(splitX), 0.52],
+    [-2.43, rakeY(-2.43), 0.52],
+  ], '#9BBFC4', 'rgba(24, 44, 49, 0.5)');
+  addPlane(faces, [
+    [splitX, transomY, 0.52],
+    [2.43, transomY, 0.52],
+    [2.43, rakeY(2.43), 0.52],
+    [splitX, rakeY(splitX), 0.52],
+  ], '#9BBFC4', 'rgba(24, 44, 49, 0.5)');
+  addBox(faces, [splitX, (-1.45 + rakeY(splitX)) / 2, 0.53], [0.16, rakeY(splitX) + 1.45, 0.2], framePalette);
+  addBox(faces, [(splitX + 2.36) / 2, transomY, 0.54], [2.36 - splitX, 0.12, 0.19], framePalette);
+
+  addSash(
+    faces,
+    hingeX,
+    2.36,
+    hingeX,
+    hingeZ,
+    openingAngle,
+    2.28,
+    -1,
+    { bottom: -1.42, top: transomY - 0.075, handleY: -0.64 },
+  );
+
   return faces;
 }
 
@@ -161,5 +294,7 @@ function buildArchedScene(): Face[] {
 }
 
 export function buildWindowScene(scene: WindowScene, isOpen: boolean): Face[] {
-  return scene === 'arched' ? buildArchedScene() : buildFacadeScene(isOpen);
+  if (scene === 'arched') return buildArchedScene();
+  if (scene === 'sloped') return buildSlopedScene(isOpen);
+  return buildFacadeScene(isOpen);
 }
