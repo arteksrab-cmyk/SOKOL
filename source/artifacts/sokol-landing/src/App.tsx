@@ -470,7 +470,7 @@ function Home() {
           </div>
           <div className="relative z-10 flex flex-col gap-7 md:flex-row md:items-end md:justify-between">
             <div className="reveal delay-1">
-              <p className="hero-lead">Окна, двери, стеклопакеты, перегородки, балконы и аксессуары с доставкой и монтажом в Новосибирске и соседних регионах.</p>
+              <p className="hero-lead">Изготовление окон ПВХ на заказ, поставка доборных элементов, доставка и монтаж в Новосибирске и соседних регионах.</p>
               <TrustHighlights />
               <div className="hero-actions mt-6">
                 <a className="button-primary" href={vkUrl} target="_blank" rel="noopener noreferrer">Смотреть решения <Arrow /></a>
@@ -492,7 +492,7 @@ function Home() {
             <h2 className="section-heading display mt-7">Остекление, которое <em>работает.</em></h2>
           </div>
           <div className="reveal delay-1 flex flex-col justify-end">
-            <p className="section-copy">«ПФ СОКОЛ» изготавливает и устанавливает решения для дома и бизнеса: окна, двери, стеклопакеты, офисные и душевые перегородки, балконы и лоджии. Работаем в Новосибирске, Новосибирской области, Республике Алтай и Алтайском крае.</p>
+            <p className="section-copy">«ПФ СОКОЛ» изготавливает окна ПВХ на заказ, двери и стеклопакеты, поставляет доборные элементы и выполняет монтажные работы. Работаем в Новосибирске, Новосибирской области, Республике Алтай и Алтайском крае.</p>
             <a className="button-ghost mt-8 w-fit" href={vkUrl} target="_blank" rel="noopener noreferrer">Открыть страницу VK <Arrow diagonal /></a>
           </div>
         </div>
@@ -546,7 +546,7 @@ function Home() {
           <div className="reveal delay-1 service-detail-grid">
             <article className="service-detail">
               <span className="service-detail-label">Услуги</span>
-              <p>Монтаж, доставка, регулировка, замена резины, ремонт старых окон и замена стеклопакетов.</p>
+              <p>Изготовление окон ПВХ, демонтаж старых конструкций, монтаж и установка новых окон, поставка доборных элементов, доставка, регулировка и ремонт.</p>
             </article>
             <article className="service-detail">
               <span className="service-detail-label">Сроки</span>
@@ -641,8 +641,8 @@ function Router() {
 
 const siteOrigin = 'https://pf-sokol.ru';
 const homeSeo = {
-  title: 'Пластиковые окна и двери в Новосибирске | ПФ СОКОЛ',
-  description: 'ПФ СОКОЛ — окна и двери, стеклопакеты, балконы и перегородки в Новосибирске и области. Изготовление, доставка и монтаж. Оставьте заявку на расчёт.',
+  title: 'Пластиковые окна ПВХ в Новосибирске | ПФ СОКОЛ',
+  description: 'Изготовление окон ПВХ на заказ в Новосибирске. Монтаж, демонтаж и установка, поставка доборных элементов; доставка по Новосибирской области и Алтайскому краю.',
 };
 
 function setMeta(selector: string, attribute: 'name' | 'property', key: string, content: string) {
