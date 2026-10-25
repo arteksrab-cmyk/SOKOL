@@ -470,7 +470,7 @@ function Home() {
           </div>
           <div className="relative z-10 flex flex-col gap-7 md:flex-row md:items-end md:justify-between">
             <div className="reveal delay-1">
-              <p className="hero-lead">Изготовление окон ПВХ на заказ, поставка окон и доборных элементов, доставка и монтаж в Новосибирске и соседних регионах.</p>
+              <p className="hero-lead">Изготовление окон, дверей, стеклопакетов, перегородок, балконов и аксессуаров с доставкой и монтажом по Новосибирской области и соседним регионам.</p>
               <TrustHighlights />
               <div className="hero-actions mt-6">
                 <a className="button-primary" href={vkUrl} target="_blank" rel="noopener noreferrer">Смотреть решения <Arrow /></a>
