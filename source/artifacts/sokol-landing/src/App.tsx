@@ -91,8 +91,8 @@ function CookieBanner({
       <div className="cookie-copy">
         <span className="cookie-kicker">Настройки cookies</span>
         <p>
-          Мы используем только необходимые технологии для работы сайта и сохранения
-          вашего выбора. Аналитика и рекламные пиксели не подключены.
+          Яндекс.Метрика с картой кликов и Вебвизором включается только после согласия.
+          Если отклонить аналитику, счётчик не загружается.
         </p>
       </div>
       <div className="cookie-actions">
@@ -430,6 +430,13 @@ function Home() {
   const saveCookieChoice = (choice: CookieConsent) => {
     window.localStorage.setItem(cookieConsentKey, choice);
     setCookieConsent(choice);
+    window.dispatchEvent(new CustomEvent('sokol-cookie-consent', { detail: choice }));
+    if (
+      choice === 'rejected'
+      && document.querySelector('script[src*="mc.yandex.ru/metrika/tag.js"]')
+    ) {
+      window.location.reload();
+    }
   };
 
   return (
@@ -619,6 +626,7 @@ function Home() {
 function Router() {
   return (
     <RoutedErrorBoundary>
+      <PageSeo />
       <Switch>
         <Route path="/" component={Home} />
         <Route path="/documents" component={DocumentsPage} />
@@ -629,6 +637,67 @@ function Router() {
       </Switch>
     </RoutedErrorBoundary>
   );
+}
+
+const siteOrigin = 'https://pf-sokol.ru';
+const homeSeo = {
+  title: 'Пластиковые окна и двери в Новосибирске | ПФ СОКОЛ',
+  description: 'ПФ СОКОЛ — окна и двери, стеклопакеты, балконы и перегородки в Новосибирске и области. Изготовление, доставка и монтаж. Оставьте заявку на расчёт.',
+};
+
+function setMeta(selector: string, attribute: 'name' | 'property', key: string, content: string) {
+  let element = document.head.querySelector<HTMLMetaElement>(selector);
+  if (!element) {
+    element = document.createElement('meta');
+    element.setAttribute(attribute, key);
+    document.head.append(element);
+  }
+  element.content = content;
+}
+
+function PageSeo() {
+  const [location] = useLocation();
+
+  useEffect(() => {
+    const pathname = location.split('?')[0] || '/';
+    const legalDocument = legalDocuments.find((document) => document.path === pathname);
+    const page = pathname === '/'
+      ? homeSeo
+      : pathname === '/documents'
+        ? {
+            title: 'Документы и политики сайта | ПФ СОКОЛ',
+            description: 'Документы ПФ СОКОЛ: публичная оферта, условия использования, политика конфиденциальности и cookies.',
+          }
+        : legalDocument
+          ? {
+              title: `${legalDocument.title} | ПФ СОКОЛ`,
+              description: legalDocument.summary,
+            }
+          : {
+              title: 'Страница не найдена | ПФ СОКОЛ',
+              description: 'Запрошенная страница не найдена. Перейдите на сайт ПФ СОКОЛ.',
+            };
+    const canonicalUrl = `${siteOrigin}${pathname === '/' ? '/' : pathname}`;
+
+    document.title = page.title;
+    setMeta('meta[name="description"]', 'name', 'description', page.description);
+    setMeta('meta[name="robots"]', 'name', 'robots', pathname === '/' || pathname === '/documents' || legalDocument ? 'index, follow' : 'noindex, follow');
+    setMeta('meta[property="og:title"]', 'property', 'og:title', page.title);
+    setMeta('meta[property="og:description"]', 'property', 'og:description', page.description);
+    setMeta('meta[property="og:url"]', 'property', 'og:url', canonicalUrl);
+    setMeta('meta[name="twitter:title"]', 'name', 'twitter:title', page.title);
+    setMeta('meta[name="twitter:description"]', 'name', 'twitter:description', page.description);
+
+    let canonical = document.head.querySelector<HTMLLinkElement>('link[rel="canonical"]');
+    if (!canonical) {
+      canonical = document.createElement('link');
+      canonical.rel = 'canonical';
+      document.head.append(canonical);
+    }
+    canonical.href = canonicalUrl;
+  }, [location]);
+
+  return null;
 }
 
 function RoutedErrorBoundary({ children }: { children: ReactNode }) {
