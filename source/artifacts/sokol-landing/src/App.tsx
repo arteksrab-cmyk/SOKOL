@@ -9,6 +9,7 @@ import { TrustHighlights } from '@/components/trust-highlights';
 import { WorksGallery } from '@/components/works-gallery';
 import { WindowShowcase } from '@/components/window-showcase';
 import { DocumentsPage, LegalDocumentPage, legalDocuments } from '@/pages/legal';
+import { KnowledgeArticlePage, KnowledgeHubPage, knowledgeArticles } from '@/pages/knowledge';
 import NotFound from '@/pages/not-found';
 import { Route, Switch, useLocation, Router as WouterRouter } from 'wouter';
 
@@ -398,6 +399,7 @@ function Home() {
   const [cookieConsent, setCookieConsent] = useState<CookieConsent | null>(null);
   const [requestOpen, setRequestOpen] = useState(false);
   const [estimateOpen, setEstimateOpen] = useState(false);
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   useEffect(() => {
     const elements = document.querySelectorAll<HTMLElement>('.reveal');
@@ -444,7 +446,14 @@ function Home() {
       <section className="hero" id="начало">
         <header className="mobile-sticky-header hero-inner mx-auto flex max-w-[1180px] items-center justify-between px-5 py-5 md:px-8 md:py-7">
           <a href="#начало" aria-label="Сокол — начало страницы"><SokolMark /></a>
-          <nav className="desktop-nav flex items-center gap-5" aria-label="Основная навигация">
+          <details className="nav-dropdown desktop-knowledge-dropdown">
+            <summary className="knowledge-menu-button">Материалы <span aria-hidden="true">⌄</span></summary>
+            <div className="nav-dropdown-panel">
+              <a href={sitePath('/info')}>Все материалы</a>
+              {knowledgeArticles.map((article) => <a href={sitePath(article.path)} key={article.path}>{article.title}</a>)}
+            </div>
+          </details>
+          <nav className="desktop-nav flex items-center gap-3" aria-label="Основная навигация">
             <a className="nav-link text-[hsl(var(--primary-foreground)/.7)]" href="#о-сообществе">О сообществе</a>
             <a className="nav-link text-[hsl(var(--primary-foreground)/.7)]" href="#ритм">Ритм</a>
             <button className="button-request" type="button" onClick={openRequest}>Оставить заявку <Arrow /></button>
@@ -452,11 +461,22 @@ function Home() {
             <button className="button-primary header-estimate-button" type="button" onClick={openEstimate}>Заполнить анкету для расчёта сметы <Arrow /></button>
             <a className="button-primary" href={vkUrl} target="_blank" rel="noopener noreferrer">Перейти в VK <ExternalMark /></a>
           </nav>
+          <button className="mobile-menu-toggle" type="button" aria-expanded={mobileMenuOpen} aria-controls="mobile-knowledge-menu" onClick={() => setMobileMenuOpen((open) => !open)}>
+            <span className="sr-only">{mobileMenuOpen ? 'Закрыть меню' : 'Открыть меню разделов'}</span>
+            <span className="mobile-menu-icon" aria-hidden="true">{mobileMenuOpen ? '×' : '☰'}</span>
+          </button>
           <a className="mobile-phone-button" href={phoneUrl} aria-label="Позвонить в ПФ Сокол">
              <span className="mobile-phone-icon"><PhoneIcon /></span>
             <span>+7 (951) 379-28-30</span>
             <Arrow />
           </a>
+          {mobileMenuOpen && (
+            <nav className="mobile-menu open" id="mobile-knowledge-menu" aria-label="Разделы сайта">
+              <a className="nav-link" href="#о-сообществе" onClick={() => setMobileMenuOpen(false)}>О компании</a>
+              <a className="nav-link" href={sitePath('/info')} onClick={() => setMobileMenuOpen(false)}>Полезная информация</a>
+              {knowledgeArticles.map((article) => <a className="nav-link mobile-menu-article" href={sitePath(article.path)} key={article.path} onClick={() => setMobileMenuOpen(false)}>{article.title}</a>)}
+            </nav>
+          )}
         </header>
 
         <div className="hero-content hero-inner mx-auto flex min-h-[620px] max-w-[1180px] flex-col justify-between px-5 pb-11 pt-14 md:min-h-[690px] md:px-8 md:pb-14 md:pt-16">
@@ -589,7 +609,7 @@ function Home() {
       </section>
 
       <footer className="footer section section-tight" id="footer">
-        <div className="grid gap-12 md:grid-cols-[1.2fr_1fr_1fr] md:items-start">
+        <div className="grid gap-12 md:grid-cols-[1.2fr_1fr_1.4fr_1fr] md:items-start">
           <div>
             <a className="footer-logo-link" href="#начало" aria-label="Вернуться в начало"><SokolEagleMark smallBird className="footer-logo" /></a>
             <p className="footer-note mt-7 max-w-[310px]">ООО «ПФ СОКОЛ» — окна, двери, стеклопакеты, перегородки, балконы, лоджии и монтажные услуги.</p>
@@ -598,6 +618,13 @@ function Home() {
             <span className="footer-documents-title">Документы</span>
             {legalDocuments.map((document) => (
               <a className="footer-note" href={sitePath(document.path)} key={document.path}>{document.label}</a>
+            ))}
+          </nav>
+          <nav className="footer-documents footer-knowledge" aria-label="Полезная информация">
+            <span className="footer-documents-title">Полезное</span>
+            <a className="footer-note" href={sitePath('/info')}>Все материалы</a>
+            {knowledgeArticles.map((article) => (
+              <a className="footer-note" href={sitePath(article.path)} key={article.path}>{article.title}</a>
             ))}
           </nav>
           <div className="flex flex-col items-start gap-4 md:items-end">
@@ -629,6 +656,10 @@ function Router() {
       <PageSeo />
       <Switch>
         <Route path="/" component={Home} />
+        <Route path="/info" component={KnowledgeHubPage} />
+        {knowledgeArticles.map((article) => (
+          <Route path={article.path} component={() => <KnowledgeArticlePage article={article} />} key={article.path} />
+        ))}
         <Route path="/documents" component={DocumentsPage} />
         {legalDocuments.map((document) => (
           <Route path={document.path} component={() => <LegalDocumentPage document={document} />} key={document.path} />
@@ -643,6 +674,10 @@ const siteOrigin = 'https://pf-sokol.ru';
 const homeSeo = {
   title: 'Пластиковые окна ПВХ в Новосибирске | ПФ СОКОЛ',
   description: 'Изготовление окон ПВХ на заказ в Новосибирске. Поставка окон и доборных элементов, монтаж и демонтаж; доставка по Новосибирской области и Алтайскому краю.',
+};
+const knowledgeHubSeo = {
+  title: 'Полезная информация об окнах и монтаже | ПФ СОКОЛ',
+  description: 'Профили ПВХ, стеклопакеты, оконная фурнитура, монтаж и отделка откосов. Практические материалы ПФ СОКОЛ для Новосибирска и области.',
 };
 
 function setMeta(selector: string, attribute: 'name' | 'property', key: string, content: string) {
@@ -661,8 +696,13 @@ function PageSeo() {
   useEffect(() => {
     const pathname = location.split('?')[0] || '/';
     const legalDocument = legalDocuments.find((document) => document.path === pathname);
+    const knowledgeArticle = knowledgeArticles.find((article) => article.path === pathname);
     const page = pathname === '/'
       ? homeSeo
+      : pathname === '/info'
+        ? knowledgeHubSeo
+        : knowledgeArticle
+          ? { title: `${knowledgeArticle.title} | ПФ СОКОЛ`, description: knowledgeArticle.description }
       : pathname === '/documents'
         ? {
             title: 'Документы и политики сайта | ПФ СОКОЛ',
@@ -681,12 +721,34 @@ function PageSeo() {
 
     document.title = page.title;
     setMeta('meta[name="description"]', 'name', 'description', page.description);
-    setMeta('meta[name="robots"]', 'name', 'robots', pathname === '/' || pathname === '/documents' || legalDocument ? 'index, follow' : 'noindex, follow');
+    const indexable = pathname === '/' || pathname === '/info' || pathname === '/documents' || legalDocument || knowledgeArticle;
+    setMeta('meta[name="robots"]', 'name', 'robots', indexable ? 'index, follow' : 'noindex, follow');
     setMeta('meta[property="og:title"]', 'property', 'og:title', page.title);
     setMeta('meta[property="og:description"]', 'property', 'og:description', page.description);
     setMeta('meta[property="og:url"]', 'property', 'og:url', canonicalUrl);
+    setMeta('meta[property="og:type"]', 'property', 'og:type', knowledgeArticle ? 'article' : 'website');
     setMeta('meta[name="twitter:title"]', 'name', 'twitter:title', page.title);
     setMeta('meta[name="twitter:description"]', 'name', 'twitter:description', page.description);
+    let structuredData = document.head.querySelector<HTMLScriptElement>('#knowledge-structured-data');
+    if (knowledgeArticle) {
+      if (!structuredData) {
+        structuredData = document.createElement('script');
+        structuredData.id = 'knowledge-structured-data';
+        structuredData.type = 'application/ld+json';
+        document.head.append(structuredData);
+      }
+      structuredData.textContent = JSON.stringify({
+        '@context': 'https://schema.org',
+        '@type': 'Article',
+        headline: knowledgeArticle.title,
+        description: knowledgeArticle.description,
+        inLanguage: 'ru-RU',
+        mainEntityOfPage: canonicalUrl,
+        publisher: { '@type': 'Organization', name: 'ПФ СОКОЛ', url: siteOrigin },
+      });
+    } else {
+      structuredData?.remove();
+    }
 
     let canonical = document.head.querySelector<HTMLLinkElement>('link[rel="canonical"]');
     if (!canonical) {
